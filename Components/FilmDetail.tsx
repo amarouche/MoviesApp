@@ -3,8 +3,9 @@ import {StyleSheet ,View, Text,Image, ActivityIndicator, ScrollView} from "react
 import { getFilmsFromApiById } from "../api/IMDBAPI";
 import moment from 'moment'
 import numeral from 'numeral'
+import { connect } from "react-redux";
 
-export default class FilmDetail extends React.Component {
+class FilmDetail extends React.Component {
   constructor(props){
     super(props)
     this.state={
@@ -12,8 +13,8 @@ export default class FilmDetail extends React.Component {
       isLoading:true
     }
   }
-  componentDidMount(){
   
+  componentDidMount(){
     getFilmsFromApiById(this.props.navigation.state.params.film_id).then(data =>{
       this.setState({
         film : data,
@@ -65,6 +66,7 @@ export default class FilmDetail extends React.Component {
 
   }
   render(){
+    console.log(this.props)
     const film_id = this.props.navigation.state.params.film_id
    
     return (
@@ -121,3 +123,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
   }
 })
+const mapStateToProps = (state:any) => {
+  return {
+    favoritesFilm: state.favoritesFilm
+  }
+}
+export default  connect(mapStateToProps)(FilmDetail)
